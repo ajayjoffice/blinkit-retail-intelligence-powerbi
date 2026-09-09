@@ -5,7 +5,7 @@ Interactive Power BI dashboard for analyzing retail sales performance, product i
 ## 📊 Dashboard Preview
 
 ### Executive Overview
-![Executive Overview](screenshots/executive-overview.png)
+![Executive Overview](screenshots/Executive Overview.png)
 
 ### Sales Intelligence
 ![Sales Intelligence](screenshots/sales-intelligence.png)
