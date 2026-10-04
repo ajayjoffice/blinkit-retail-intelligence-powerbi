@@ -1,216 +1,189 @@
-# BlinkIT Retail Intelligence — Power BI
+# BlinkIT Retail Intelligence Dashboard
 
-Interactive Power BI dashboard for analyzing retail sales performance, product intelligence, outlet performance, and sales drivers.
+An interactive, two-page Power BI dashboard for exploring retail sales performance across products, outlet formats, and location tiers. The project uses Power Query for data preparation and DAX measures for KPI-driven analysis.
 
-## 📊 Dashboard Preview
+## Table of Contents
 
-### Executive Overview
-![Executive Overview](screenshots/executive-overview.png)
-
-### Sales Intelligence
-![Sales Intelligence](screenshots/sales-intelligence.png)
+- [1. Overview](#1-overview)
+- [2. Key Features](#2-key-features)
+- [3. Technology Stack](#3-technology-stack)
+- [4. Getting Started](#4-getting-started)
+- [5. Usage](#5-usage)
+- [6. Project Structure](#6-project-structure)
+- [7. Architecture and Workflow](#7-architecture-and-workflow)
+- [8. Results and Evaluation](#8-results-and-evaluation)
+- [9. Limitations](#9-limitations)
+- [10. Future Improvements](#10-future-improvements)
 
 ---
 
-## 🎯 Business Problem
+## 1. Overview
 
-Retail businesses generate large volumes of transactional data across products, outlets, locations, and store formats. Without a structured analytical view, it can be difficult to understand:
+Retail datasets contain product, outlet, and sales attributes that can be difficult to inspect efficiently in raw spreadsheet form. This project organizes the supplied BlinkIT grocery dataset into an interactive business intelligence report.
 
-- Which outlet types contribute the most sales
-- Which product categories drive revenue
-- How sales vary across location tiers
-- Which products are the strongest contributors
-- How product visibility differs across categories
-- Which business dimensions can be explored to understand sales performance
+The dashboard supports high-level KPI monitoring, comparisons across outlet and product categories, product-level analysis, and interactive exploration of dimensions associated with sales.
 
-This project converts the raw BlinkIT grocery dataset into an interactive business intelligence dashboard using Microsoft Power BI.
+| Dataset attribute | Count |
+|---|---:|
+| Records | 8,523 |
+| Unique products | 1,559 |
+| Outlets | 10 |
+| Product categories | 16 |
+| Outlet location tiers | 3 |
+| Outlet types | 4 |
 
-## 🚀 Project Objectives
+The source dataset includes product and outlet attributes, item visibility, sales, and ratings.
 
-- Analyze overall retail sales performance
-- Compare sales across outlet types and location tiers
-- Identify high-performing product categories
-- Analyze product-level sales contribution
-- Explore relationships between product visibility and sales
-- Provide interactive sales-driver analysis using a Decomposition Tree
-- Build a clean, executive-friendly two-page Power BI dashboard
+## 2. Key Features
 
-## 📁 Dataset
+- **Executive KPIs:** Total Sales, Product Count, Outlet Count, Average Rating, and Average Visibility.
+- **Outlet analysis:** Compare sales by outlet type and location tier.
+- **Category analysis:** Explore sales by product category and fat-content group.
+- **Visibility analysis:** Examine item visibility alongside sales.
+- **Sales driver exploration:** Interactively expand a Decomposition Tree across business dimensions.
+- **Top products:** Identify the Top 10 products by sales.
+- **Product intelligence:** Compare category sales, average rating, and average visibility.
+- **Synchronized slicers:** Apply filters across both report pages.
+- **Page navigation:** Move between Executive Overview and Sales Intelligence.
 
-The dataset contains **8,523 records**, covering **1,559 unique products across 10 outlets**.
+## 3. Technology Stack
 
-Key fields include:
+| Technology | Purpose |
+|---|---|
+| Microsoft Power BI Desktop | Data model, visuals, and report interactivity |
+| Power Query | Data cleaning and transformation |
+| DAX | Measures and analytical calculations |
+| Microsoft Excel | Source workbook |
+| GitHub | Version control and project documentation |
 
-- Item Fat Content
-- Item Identifier
-- Item Type
-- Outlet Establishment Year
-- Outlet Identifier
+## 4. Getting Started
+
+### Requirements
+
+- Microsoft Power BI Desktop to open and interact with the `.pbix` file.
+- The report file available in this repository.
+- The source Excel workbook if you need to refresh or rebuild the report.
+
+Power BI Desktop is primarily available for Windows. On macOS, use a compatible Windows environment or Power BI Service where supported by your account and report configuration.
+
+### Open the report
+
+1. Clone or download this repository.
+2. Open `BlinkIT_Retail_Intelligence.pbix` in Power BI Desktop.
+3. If prompted for a data source, update the configured path to the source workbook available in your environment.
+4. Refresh the model if required, then explore the report pages and filters.
+
+### Refreshing the data
+
+The report was built from an Excel workbook. Its original file path may not exist on another machine. Update the source path in **Transform data → Data source settings** or in the relevant Power Query source step before refreshing.
+
+## 5. Usage
+
+### Page 1 — Executive Overview
+
+![Executive Overview](screenshots/executive-overview.png)
+
+Use this page to review headline KPIs and compare sales by outlet type, product category, location tier, and fat-content group. The visibility scatter plot supports exploration of visibility and sales patterns.
+
+Available slicers:
+- Outlet Type
 - Outlet Location Type
 - Outlet Size
-- Outlet Type
-- Item Visibility
-- Item Weight
-- Sales
-- Rating
+- Item Type
 
-## 🧹 Data Preparation
+### Page 2 — Sales Intelligence
 
-Data preparation was performed using **Power Query**.
+![Sales Intelligence](screenshots/sales-intelligence.png)
 
-Key transformations included:
+Use the **Sales Drivers** Decomposition Tree to break down sales interactively by dimensions such as outlet type, location tier, outlet size, outlet age group, item type, and fat content. The page also contains Top 10 products by sales, a Product Intelligence matrix, and product visibility by category.
 
-- Standardizing inconsistent Item Fat Content values
-- Validating data types
-- Handling missing Item Weight values without unnecessarily removing records
-- Checking duplicate records
-- Validating sales, visibility, and rating ranges
-- Creating an Outlet Age Group classification
-- Structuring the main dataset as `Fact_Retail`
-- Separating analytical measures into a dedicated `_Measures` table
+Slicers are synchronized across both pages. Clear active slicer selections and visual selections to return to the default view.
 
-## 🧠 Data Modeling & DAX
+## 6. Project Structure
 
-The project uses a structured Power BI model with the primary analytical table `Fact_Retail`.
+```text
+blinkit-retail-intelligence-powerbi/
+├── BlinkIT_Retail_Intelligence.pbix
+├── README.md
+└── screenshots/
+    ├── executive-overview.png
+    └── sales-intelligence.png
+```
 
-Key DAX measures include:
+The two screenshot links above assume the exported report images are committed to the `screenshots/` directory.
+
+## 7. Architecture and Workflow
+
+The report follows this workflow:
+
+```mermaid
+flowchart TD
+    A[Excel source workbook] --> B[Data quality review]
+    B --> C[Power Query transformations]
+    C --> D[Fact_Retail model table]
+    D --> E[DAX measures in _Measures]
+    E --> F[Executive Overview]
+    E --> G[Sales Intelligence]
+    F <--> H[Synchronized slicers and navigation]
+    G <--> H
+```
+
+### Data preparation
+
+Power Query was used to standardize inconsistent Item Fat Content labels, validate data types, review missing Item Weight values, and prepare the data for analysis. Missing Item Weight values were retained rather than removing otherwise usable records. An Outlet Age Group classification was also created.
+
+### Data model and measures
+
+The primary analytical table is named `Fact_Retail`, and a dedicated `_Measures` table organizes report measures. Core measures include Total Sales, Product Count, Outlet Count, Average Rating, and Average Visibility. Additional measures support sales contribution and per-product/per-outlet comparisons.
+
+Example measure:
 
 ```DAX
 Total Sales =
 SUM(Fact_Retail[Sales])
 ```
 
-```DAX
-Product Count =
-DISTINCTCOUNT(Fact_Retail[Item Identifier])
-```
+Confirm the column name against the saved Power BI model if it differs in your version.
 
-```DAX
-Outlet Count =
-DISTINCTCOUNT(Fact_Retail[Outlet Identifier])
-```
+## 8. Results and Evaluation
 
-```DAX
-Average Rating =
-AVERAGE(Fact_Retail[Rating])
-```
+### Dataset and headline metrics
 
-```DAX
-Average Visibility =
-AVERAGE(Fact_Retail[Item Visibility])
-```
+| Metric | Result |
+|---|---:|
+| Source records | 8,523 |
+| Unique products | 1,559 |
+| Outlets | 10 |
+| Total Sales | Approximately ₹1.20M |
+| Average Visibility | Approximately 6.61% |
+| Average Rating | Approximately 3.92 |
 
-Additional measures were created for sales contribution, sales per outlet, and sales per product.
+### Observed patterns
 
-# 📄 Dashboard Architecture
+- Supermarket Type1 contributes approximately ₹778.5K, or about 64.8% of total sales in the default report context.
+- Tier 3 locations have the highest sales among the three location tiers in the default context.
+- Fruits & Vegetables and Snack Foods are among the highest-sales product categories.
+- Average visibility differs across product categories.
+- Ratings show relatively limited variation across categories.
 
-## Page 1 — Executive Overview
+These are descriptive observations, not evidence that outlet type, location tier, or visibility causes a particular sales outcome.
 
-Provides a high-level view of business performance.
+### Validation
 
-### KPI Cards
+Manual report checks covered KPI and visual rendering, slicer filtering and cross-page synchronization, Decomposition Tree interaction, Top 10 response to filters, matrix totals, and page navigation. This is manual report QA, not a predictive-model evaluation or performance benchmark.
 
-- Total Sales
-- Product Count
-- Outlet Count
-- Average Rating
-- Average Visibility
+## 9. Limitations
 
-### Visual Analysis
+- The analysis is limited to the fields and records available in the supplied dataset.
+- Missing Item Weight values remain and may limit analyses that depend on item weight.
+- The report is descriptive; it does not implement causal inference, forecasting, or machine-learning predictions.
+- Sales comparisons may be affected by assortment, outlet scale, location, and other factors not controlled for in the report.
+- Results change when slicers or visual selections are active; reported observations refer to the default context.
+- The `.pbix` file requires Power BI-compatible software for full interactivity.
 
-- Sales by Outlet Type
-- Sales by Product Category
-- Sales by Location Tier
-- Product Visibility vs Sales
-- Sales by Fat Content
+## 10. Future Improvements
 
-### Interactive Filters
-
-- Outlet Type
-- Outlet Location Type
-- Outlet Size
-- Item Type
-
-## Page 2 — Sales Intelligence
-
-Focuses on deeper product and sales-driver analysis.
-
-### Visual Analysis
-
-- **Sales Drivers** — interactive Decomposition Tree
-- **Top 10 Products by Sales**
-- **Product Intelligence** — category-level sales, rating, and visibility
-- **Product Visibility by Category**
-
-The Decomposition Tree allows users to interactively break down sales across dimensions such as Outlet Type, Location Tier, Outlet Size, Outlet Age Group, Item Type, and Fat Content.
-
-## 🔎 Key Business Insights
-
-### Outlet Performance
-
-Supermarket Type1 is the dominant outlet format, contributing approximately **₹778.5K**, or about **64.8% of total sales**.
-
-### Location Performance
-
-Tier 3 locations contribute the highest sales among the three location tiers, making them an important segment for further business investigation.
-
-### Product Categories
-
-**Fruits & Vegetables** and **Snack Foods** are among the strongest-performing product categories, followed by categories such as Household and Frozen Foods.
-
-### Product Visibility
-
-Average product visibility is approximately **6.61%**, with noticeable differences across product categories.
-
-### Customer Rating
-
-Average rating is approximately **3.92**, with relatively limited variation between categories.
-
-> These observations describe patterns present in the dataset. They should not be interpreted as proof of causal relationships.
-
-## 💡 Business Recommendations
-
-1. **Prioritize high-performing outlet formats** — investigate the operational and assortment characteristics behind Supermarket Type1's strong contribution.
-2. **Review Tier 3 performance** — analyze why Tier 3 locations generate strong sales and evaluate whether similar strategies can be applied elsewhere.
-3. **Protect strong product categories** — maintain appropriate inventory and merchandising focus for high-performing categories.
-4. **Investigate product visibility differences** — review categories with unusually high or low visibility to understand potential merchandising opportunities.
-5. **Use driver analysis for deeper investigation** — use the Decomposition Tree to explore combinations of outlet, location, product, and store characteristics associated with higher sales.
-
-## 🛠️ Tech Stack
-
-- **Microsoft Power BI**
-- **Power Query**
-- **DAX**
-- **Microsoft Excel**
-- **GitHub**
-
-## 📂 Project Structure
-
-```text
-blinkit-retail-intelligence-powerbi/
-│
-├── BlinkIT_Retail_Intelligence.pbix
-├── README.md
-│
-└── screenshots/
-    ├── executive-overview.png
-    └── sales-intelligence.png
-```
-
-## ⭐ Project Highlights
-
-- Two-page executive-style dashboard
-- Interactive cross-page slicers
-- Dedicated DAX measures table
-- Power Query data transformation
-- Product-level sales analysis
-- Interactive Decomposition Tree
-- Top 10 product analysis
-- KPI-driven executive overview
-- Clean, focused visual design
-- Business-oriented recommendations
-- No unsupported predictive or machine-learning claims
-
-## 📌 Disclaimer
-
-This project is intended for portfolio and analytical demonstration purposes. Business insights are based on the supplied dataset and represent descriptive analysis rather than causal or predictive conclusions.
+- Document a portable data-refresh process for different local file paths.
+- Add time-based sales analysis if reliable transaction-date or period fields become available.
+- Validate business interpretations with additional data and domain stakeholders before using them for operational decisions.
+- Review accessibility, including color contrast, alt text, and keyboard-friendly navigation.
