@@ -54,7 +54,6 @@ The source dataset includes product and outlet attributes, item visibility, sale
 | Power Query | Data cleaning and transformation |
 | DAX | Measures and analytical calculations |
 | Microsoft Excel | Source workbook |
-| GitHub | Version control and project documentation |
 
 ## 4. Getting Started
 
@@ -68,19 +67,20 @@ Power BI Desktop is primarily available for Windows. On macOS, use a compatible 
 
 ### Open the report
 
-1. Clone or download this repository.
+1. Clone or download this repository, or download the report and source workbook separately.
 2. Open `BlinkIT_Retail_Intelligence.pbix` in Power BI Desktop.
 3. If prompted for a data source, update the configured path to the source workbook available in your environment.
 4. Refresh the model if required, then explore the report pages and filters.
 
 ### Refreshing the data
 
-The report was built from an Excel workbook. Its original file path may not exist on another machine. Update the source path in **Transform data → Data source settings** or in the relevant Power Query source step before refreshing.
+The report was built from the included workbook at `assets/BlinkIT Grocery Data Excel.xlsx`. Its original file path may not exist on another machine. Update the source path in **Transform data → Data source settings** or in the relevant Power Query source step to point to the included workbook before refreshing. Refresh requires local access to that file.
 
 ## 5. Usage
 
 ### Page 1 — Executive Overview
 
+<!-- Screenshot placeholder: replace with an updated capture if the report changes. -->
 ![Executive Overview](screenshots/executive-overview.png)
 
 Use this page to review headline KPIs and compare sales by outlet type, product category, location tier, and fat-content group. The visibility scatter plot supports exploration of visibility and sales patterns.
@@ -93,6 +93,7 @@ Available slicers:
 
 ### Page 2 — Sales Intelligence
 
+<!-- Screenshot placeholder: replace with an updated capture if the report changes. -->
 ![Sales Intelligence](screenshots/sales-intelligence.png)
 
 Use the **Sales Drivers** Decomposition Tree to break down sales interactively by dimensions such as outlet type, location tier, outlet size, outlet age group, item type, and fat content. The page also contains Top 10 products by sales, a Product Intelligence matrix, and product visibility by category.
@@ -105,14 +106,18 @@ Slicers are synchronized across both pages. Clear active slicer selections and v
 blinkit-retail-intelligence-powerbi/
 ├── BlinkIT_Retail_Intelligence.pbix
 ├── README.md
+├── assets/
+│   └── BlinkIT Grocery Data Excel.xlsx
 └── screenshots/
     ├── executive-overview.png
     └── sales-intelligence.png
 ```
 
-The two screenshot links above assume the exported report images are committed to the `screenshots/` directory.
+The screenshots are included in `screenshots/`. The repository has no separate license file, so confirm the intended licensing before redistribution.
 
 ## 7. Architecture and Workflow
+
+<!-- Diagram placeholder: this Mermaid workflow can be replaced with an exported diagram. -->
 
 The report follows this workflow:
 
@@ -136,14 +141,13 @@ Power Query was used to standardize inconsistent Item Fat Content labels, valida
 
 The primary analytical table is named `Fact_Retail`, and a dedicated `_Measures` table organizes report measures. Core measures include Total Sales, Product Count, Outlet Count, Average Rating, and Average Visibility. Additional measures support sales contribution and per-product/per-outlet comparisons.
 
-Example measure:
+Example measure pattern:
 
 ```DAX
 Total Sales =
 SUM(Fact_Retail[Sales])
 ```
 
-Confirm the column name against the saved Power BI model if it differs in your version.
 
 ## 8. Results and Evaluation
 
@@ -168,9 +172,9 @@ Confirm the column name against the saved Power BI model if it differs in your v
 
 These are descriptive observations, not evidence that outlet type, location tier, or visibility causes a particular sales outcome.
 
-### Validation
+### Evaluation scope
 
-Manual report checks covered KPI and visual rendering, slicer filtering and cross-page synchronization, Decomposition Tree interaction, Top 10 response to filters, matrix totals, and page navigation. This is manual report QA, not a predictive-model evaluation or performance benchmark.
+The results above are descriptive summaries shown in the report's default filter context. No predictive model, causal analysis, or formal performance benchmark is included. Validate figures after refreshing the workbook or changing filters, since these actions can change displayed values.
 
 ## 9. Limitations
 
@@ -180,6 +184,7 @@ Manual report checks covered KPI and visual rendering, slicer filtering and cros
 - Sales comparisons may be affected by assortment, outlet scale, location, and other factors not controlled for in the report.
 - Results change when slicers or visual selections are active; reported observations refer to the default context.
 - The `.pbix` file requires Power BI-compatible software for full interactivity.
+- The repository does not include a license file; confirm use and redistribution terms with the repository owner.
 
 ## 10. Future Improvements
 
